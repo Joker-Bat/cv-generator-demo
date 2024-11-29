@@ -1,0 +1,131 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resume</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="bg-gray-100">
+    <!-- Top Navigation Bar -->
+
+    {{!-- <nav class="bg-blue-600 shadow">
+      <div
+        class="container mx-auto px-4 py-3 flex justify-between items-center"
+      >
+        <div class="flex items-center space-x-4">
+          <img src="logo.png" alt=" Logo" class="h-8" />
+        </div>
+      </div>
+    </nav> --}}
+
+    <div class="container mx-auto px-4 py-6">
+      <div class="bg-white shadow rounded-lg p-6">
+        <!-- Profile Header -->
+        <div class="flex flex-wrap md:flex-nowrap items-center space-x-6">
+          <img
+            src="1.png"
+            alt="Profile Picture"
+            class="w-24 h-24 rounded-full"
+          />
+          <div>
+            <h2 class="text-2xl font-semibold text-gray-800">{{firstname}}
+              <span class="blur-sm">{{lastname}}</span></h2>
+            <p class="text-lg text-gray-600">{{role}}</p>
+            <p class="text-md text-gray-600">{{yearsOfExperience}} years of
+              experience</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        <!-- Left Column -->
+        <div class="space-y-6">
+          <!-- Brief Summary -->
+          <div class="bg-white shadow rounded-lg p-6">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Brief Summary</h3>
+            <p class="text-sm text-gray-600">{{summary}}</p>
+          </div>
+
+          <!-- Experience -->
+          <div class="bg-white shadow rounded-lg p-6">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Experience</h3>
+            <div class="space-y-4">
+              <!-- Deloitte USI -->
+              {{#each experienceList as |item|}}
+                <div>
+                  <h4
+                    class="text-lg font-semibold text-gray-800"
+                  >{{item.role}}</h4>
+                  <p class="text-sm text-gray-600">{{item.duration}}</p>
+                  <p class="text-sm text-gray-600 mt-2">
+                    {{item.summary}}
+                  </p>
+                  <ul class="list-disc list-inside text-sm text-gray-600 mt-2">
+                    {{#each item.details as |desc|}}
+                      <li>{{desc}}</li>
+                    {{/each}}
+                  </ul>
+                </div>
+              {{/each}}
+
+            </div>
+          </div>
+
+          <!-- Education -->
+          <div class="bg-white shadow rounded-lg p-6">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Education</h3>
+            {{#each educationList as |education|}}
+              <div>
+                <h4
+                  class="text-lg font-semibold text-gray-800"
+                >{{education.stream}}</h4>
+                {{#if education.percentage}}
+                  <p class="text-sm text-gray-600">{{education.percentage}}</p>
+                {{/if}}
+              </div>
+            {{/each}}
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="space-y-6">
+          <!-- Skills -->
+          <div class="bg-white shadow rounded-lg p-6">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Skills</h3>
+            <div class="flex flex-wrap gap-2">
+              {{#each skills as |skill|}}
+                <span
+                  class="px-3 py-1 bg-gray-200 rounded-full text-sm"
+                >{{skill}}</span>
+              {{/each}}
+            </div>
+          </div>
+
+          <!-- Certifications -->
+          {{#if certifications}}
+            <div class="bg-white shadow rounded-lg p-6">
+              <h3
+                class="text-xl font-semibold text-gray-800 mb-4"
+              >Certifications</h3>
+              {{#each certifications as |certificate|}}
+                <p class="text-sm text-gray-600">{{certificate}}</p>
+              {{/each}}
+            </div>
+          {{/if}}
+
+          <!-- AI Video Interview -->
+          {{! <div class="bg-white shadow rounded-lg p-6">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">AI Video Interview</h3>
+        <video controls class="w-full rounded-lg shadow">
+          <source src="interview.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div> }}
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

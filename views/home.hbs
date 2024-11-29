@@ -1,0 +1,69 @@
+<!-- Container -->
+<div class="container mx-auto px-4 py-8">
+  <div class="bg-white shadow-lg rounded-lg p-6 max-w-md mx-auto">
+    <!-- Heading -->
+    <h2 class="text-xl font-semibold text-gray-800 mb-4 text-center">
+      Upload Your Resume
+    </h2>
+    <p class="text-sm text-gray-600 text-center mb-6">
+      Drag and drop your resume (PDF only) or click to browse.
+    </p>
+
+    <!-- Drag and Drop File Upload -->
+    <form
+      id="resume-upload-form"
+      class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+    >
+      <div
+        id="drop-area"
+        class="w-full h-40 flex flex-col items-center justify-center space-y-4 cursor-pointer"
+      >
+        <svg
+          class="w-12 h-12 text-gray-500"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M7 16l-4-4m0 0l4-4m-4 4h16m-5 4l4-4m0 0l-4-4m4 4H3"
+          ></path>
+        </svg>
+        <span class="text-sm text-gray-500">Drag & drop your resume here</span>
+        <span class="text-sm text-gray-400">or</span>
+        <button
+          type="button"
+          class="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded shadow hover:bg-blue-700"
+        >
+          Browse
+        </button>
+      </div>
+      <input
+        type="file"
+        id="resume-input"
+        name="resume"
+        accept=".pdf"
+        class="hidden"
+      />
+    </form>
+
+    <!-- Submit Button -->
+    <div class="mt-6">
+      <button
+        id="submit-btn"
+        class="w-full px-4 py-2 bg-blue-600 text-white font-semibold rounded shadow hover:bg-blue-700"
+      >
+        Upload & Process Resume
+      </button>
+    </div>
+
+    <!-- Status -->
+    <div id="status" class="mt-4 text-sm text-center text-gray-600"></div>
+  </div>
+</div>
+
+<!-- JavaScript -->
+<script src="/javascripts/script.js"></script>
