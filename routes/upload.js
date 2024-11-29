@@ -1,6 +1,6 @@
 var express = require("express");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const fs = require("fs");
+// const fs = require("fs");
 const path = require("path");
 const exphbs = require("../exphbs");
 // const { PDFDocument } = require("pdf-lib");
@@ -79,25 +79,31 @@ router.post("/", upload.single("resume"), async function (req, res, next) {
       finalJson
     );
 
-    const filepath = path.join(
-      __dirname,
-      "../uploads",
-      "resume-" + Date.now() + ".html"
-    );
+    const filename = "resume.html";
 
-    fs.writeFile(filepath, updatedHtmlString, err => {
-      if (err) {
-        console.error("Error writing file:", err);
-        return res.status(500).send("Internal Server Error");
-      }
+    res.setHeader("Content-Disposition", `attachment; filename=${filename}`);
+    res.setHeader("Content-Type", "text/html");
+    res.send(updatedHtmlString);
 
-      res.download(filepath, "resume.html", err => {
-        if (err) {
-          console.error("Error sending file:", err);
-          res.status(500).send("Internal Server Error");
-        }
-      });
-    });
+    // const filepath = path.join(
+    //   __dirname,
+    //   "../uploads",
+    //   "resume-" + Date.now() + ".html"
+    // );
+
+    // fs.writeFile(filepath, updatedHtmlString, err => {
+    //   if (err) {
+    //     console.error("Error writing file:", err);
+    //     return res.status(500).send("Internal Server Error");
+    //   }
+
+    //   res.download(filepath, "resume.html", err => {
+    //     if (err) {
+    //       console.error("Error sending file:", err);
+    //       res.status(500).send("Internal Server Error");
+    //     }
+    //   });
+    // });
   } catch (err) {
     console.error("Error: ", err);
     res.status(500).send("Unknown error");
