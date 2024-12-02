@@ -34,6 +34,7 @@ const prompt = `
     For fields that are missing in pdf, put placeholder for users. e.g( {{provide **percentage**}} )
     Double check the pdf file content to make sure details are missing, before putting an placeholder
 
+    Don't included any extra words about generated response. Just give me the JSON string.
     return JSON string which is valid for NodeJS JSON.parse method;
   `;
 

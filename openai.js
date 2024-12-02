@@ -26,10 +26,10 @@ class OpenAIModel {
     return response;
   }
 
-  async getJSONFromPdf(file) {
+  async getJSONFromPdf(filePath) {
     // Upload file
     console.log("Uploading file ...");
-    const fileResponse = await this.#uploadFile(file.path);
+    const fileResponse = await this.#uploadFile(filePath);
     console.log("🚀 ~ fileResponse:", fileResponse);
 
     // Creaete assistant if not already present

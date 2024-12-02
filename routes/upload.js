@@ -1,6 +1,6 @@
 const express = require("express");
-// const axios = require("axios");
-const z = require("zod");
+const path = require("path");
+const fs = require("fs/promises");
 // const { zodResponseFormat } = require("openai/helpers/zod");
 
 const { upload } = require("../middlewares/upload");
@@ -18,20 +18,31 @@ router.post("/", upload.single("resume"), async (req, res, next) => {
     if (!req.file) {
       return res.status(400).send("No file uploaded.");
     }
+    const ext = path.extname(req.file.originalname);
+    const pdfFileName = path.basename(req.file.originalname, ext);
+
+    const filePath = path.join(
+      __dirname,
+      "../uploads/",
+      `${pdfFileName}-${Date.now()}.${ext}`
+    );
+    console.log("🚀 ~ filePath:", filePath);
+
+    await fs.writeFile(filePath, req.file.buffer);
+    console.log("File Created");
 
     const llm = req.body.llm; // gemini or openai
 
     let jsonData;
     if (llm === "openai") {
-      jsonData = await openai.getJSONFromPdf(req.file);
+      jsonData = await openai.getJSONFromPdf(filePath);
     } else if (llm === "gemini") {
-      jsonData = await gemini.getJSONFromPdf(req.file);
+      jsonData = await gemini.getJSONFromPdf(filePath);
     } else {
       throw new Error(`Unknown llm: ${llm}, valid values: 'openai', 'gemini'`);
     }
 
     console.log("🚀 ~ jsonData:", jsonData);
-
     console.log("Generating template from jsonData");
     const updatedHtmlString = await exphbs.render(
       "views/template.hbs",
@@ -41,7 +52,11 @@ router.post("/", upload.single("resume"), async (req, res, next) => {
     const filename = "resume.html";
     res.setHeader("Content-Disposition", `attachment; filename=${filename}`);
     res.setHeader("Content-Type", "text/html");
-    return res.send(updatedHtmlString);
+    res.send(updatedHtmlString);
+
+    // Removing file
+    console.log("Removing file");
+    await fs.unlink(filePath);
 
     // const summaryResponse = await axios.post(
     //   "https://api.openai.com/v1/chat/completions",
