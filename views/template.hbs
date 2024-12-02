@@ -9,7 +9,7 @@
   <body class="bg-gray-100">
     <!-- Top Navigation Bar -->
 
-    {{!-- <nav class="bg-blue-600 shadow">
+    {{! <nav class="bg-blue-600 shadow">
       <div
         class="container mx-auto px-4 py-3 flex justify-between items-center"
       >
@@ -17,7 +17,7 @@
           <img src="logo.png" alt=" Logo" class="h-8" />
         </div>
       </div>
-    </nav> --}}
+    </nav> }}
 
     <div class="container mx-auto px-4 py-6">
       <div class="bg-white shadow rounded-lg p-6">
@@ -32,8 +32,7 @@
             <h2 class="text-2xl font-semibold text-gray-800">{{firstname}}
               <span class="blur-sm">{{lastname}}</span></h2>
             <p class="text-lg text-gray-600">{{role}}</p>
-            <p class="text-md text-gray-600">{{yearsOfExperience}} years of
-              experience</p>
+            <p class="text-md text-gray-600">{{yearsOfExperience}}</p>
           </div>
         </div>
       </div>
@@ -62,11 +61,6 @@
                   <p class="text-sm text-gray-600 mt-2">
                     {{item.summary}}
                   </p>
-                  <ul class="list-disc list-inside text-sm text-gray-600 mt-2">
-                    {{#each item.details as |desc|}}
-                      <li>{{desc}}</li>
-                    {{/each}}
-                  </ul>
                 </div>
               {{/each}}
 
@@ -94,13 +88,17 @@
           <!-- Skills -->
           <div class="bg-white shadow rounded-lg p-6">
             <h3 class="text-xl font-semibold text-gray-800 mb-4">Skills</h3>
-            <div class="flex flex-wrap gap-2">
-              {{#each skills as |skill|}}
-                <span
-                  class="px-3 py-1 bg-gray-200 rounded-full text-sm"
-                >{{skill}}</span>
-              {{/each}}
-            </div>
+            {{#each skills as |skill|}}
+              <h4 class="text-lg font-medium text-gray-700 my-3">
+                {{skill.name}}</h4>
+              <div class="flex flex-wrap gap-2">
+                {{#each skill.tags as |tag|}}
+                  <span class="px-3 py-1 bg-gray-200 rounded-full text-sm">
+                    {{tag}}
+                  </span>
+                {{/each}}
+              </div>
+            {{/each}}
           </div>
 
           <!-- Certifications -->
@@ -110,7 +108,7 @@
                 class="text-xl font-semibold text-gray-800 mb-4"
               >Certifications</h3>
               {{#each certifications as |certificate|}}
-                <p class="text-sm text-gray-600">{{certificate}}</p>
+                <p class="text-sm text-gray-600 mb-2">{{certificate}}</p>
               {{/each}}
             </div>
           {{/if}}

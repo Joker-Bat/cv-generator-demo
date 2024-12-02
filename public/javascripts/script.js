@@ -53,16 +53,26 @@ submitButton.addEventListener("click", () => {
     return;
   }
 
+  const llm = document.querySelector("input[name='llm']:checked").value;
+
   // Simulate file upload
+  submitButton.setAttribute("disabled", true);
   status.textContent = "Uploading and processing...";
   const formData = new FormData();
   formData.append("resume", file);
+  formData.append("llm", llm);
 
   fetch("/upload", {
     method: "POST",
     body: formData,
   })
-    .then(response => response.blob())
+    .then(async response => {
+      if (response.status === 200) {
+        return response.blob();
+      }
+
+      throw new Error(`Error: ${await response.text()} `);
+    })
     .then(blob => {
       status.textContent = "Resume uploaded successfully!";
       const url = window.URL.createObjectURL(blob);
@@ -73,9 +83,12 @@ submitButton.addEventListener("click", () => {
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
+
+      submitButton.removeAttribute("disabled");
     })
     .catch(error => {
       status.textContent = "Error uploading resume.";
       console.error("Error:", error);
+      submitButton.removeAttribute("disabled");
     });
 });
