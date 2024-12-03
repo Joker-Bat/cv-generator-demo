@@ -66,24 +66,11 @@ submitButton.addEventListener("click", () => {
     method: "POST",
     body: formData,
   })
-    .then(async response => {
-      if (response.status === 200) {
-        return response.blob();
+    .then(res => {
+      if (res.redirected) {
+        window.location.href = res.url;
       }
-
-      throw new Error(`Error: ${await response.text()} `);
-    })
-    .then(blob => {
-      status.textContent = "Resume uploaded successfully!";
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.style.display = "none";
-      a.href = url;
-      a.download = "resume.html";
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-
+      console.log("🚀 ~ res:", res);
       submitButton.removeAttribute("disabled");
     })
     .catch(error => {
@@ -91,4 +78,24 @@ submitButton.addEventListener("click", () => {
       console.error("Error:", error);
       submitButton.removeAttribute("disabled");
     });
+  // .then(async response => {
+  //   if (response.status === 200) {
+  //     return response.blob();
+  //   }
+
+  //   throw new Error(`Error: ${await response.text()} `);
+  // })
+  // .then(blob => {
+  //   status.textContent = "Resume uploaded successfully!";
+  //   const url = window.URL.createObjectURL(blob);
+  //   const a = document.createElement("a");
+  //   a.style.display = "none";
+  //   a.href = url;
+  //   a.download = "resume.html";
+  //   document.body.appendChild(a);
+  //   a.click();
+  //   window.URL.revokeObjectURL(url);
+
+  //   submitButton.removeAttribute("disabled");
+  // })
 });

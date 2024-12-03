@@ -1,17 +1,14 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs/promises");
-// const { zodResponseFormat } = require("openai/helpers/zod");
+const { randomUUID } = require("crypto");
 
 const { upload } = require("../middlewares/upload");
 const openai = require("../openai");
 const gemini = require("../gemini");
-const exphbs = require("../exphbs");
+const dataStore = require("../store");
 
 const router = express.Router();
-
-// TODO: Handle some missing field values from CV
-// TODO: Handle upload file in endpoint
 
 router.post("/", upload.single("resume"), async (req, res, next) => {
   try {
@@ -44,15 +41,11 @@ router.post("/", upload.single("resume"), async (req, res, next) => {
 
     console.log("🚀 ~ jsonData:", jsonData);
     console.log("Generating template from jsonData");
-    const updatedHtmlString = await exphbs.render(
-      "views/template.hbs",
-      jsonData
-    );
 
-    const filename = "resume.html";
-    res.setHeader("Content-Disposition", `attachment; filename=${filename}`);
-    res.setHeader("Content-Type", "text/html");
-    res.send(updatedHtmlString);
+    const uniqueId = randomUUID();
+    dataStore.setJsonData(uniqueId, jsonData);
+
+    res.redirect(`/resume/${uniqueId}`);
 
     // Removing file
     console.log("Removing file");

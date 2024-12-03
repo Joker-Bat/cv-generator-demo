@@ -17,7 +17,7 @@ const prompt = `
       }],
       educationList: [{
         stream: string, // (e.g: B.Tech in ECE - JNTU Hyderabad)
-        percentage: string, // (e.g 70% Aggregate)
+        percentage?: string, // (e.g 70% Aggregate)
       }],
       skills: [{
         name: string, // classification name (e.g: Source Control & CI/CD, methodologies)
@@ -30,9 +30,6 @@ const prompt = `
     (e.g) Let's say you can't find years of experience in pdf, try to calculate the years by adding the years from the work expereience timeline.
 
     Always add + to the yearsOfExperience. current date ${Date.now()}
-
-    For fields that are missing in pdf, put placeholder for users. e.g( {{provide **percentage**}} )
-    Double check the pdf file content to make sure details are missing, before putting an placeholder
 
     Don't included any extra words about generated response. Just give me the JSON string.
     return JSON string which is valid for NodeJS JSON.parse method;
