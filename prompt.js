@@ -8,31 +8,57 @@ const prompt = `
       firstname: string // Persons firstname
       lastname: string // Persons lastname
       role: string // Role of a person
-      yearsOfExperience: string // Years of experience. e.g(2+ years of experience)
+      location: string // City name
+      gender: string // male or female
       summary: string // Create summary from given data with around 80 words.
+      contact: {
+        email: string // email id
+        phone: string // include country code
+      }
       experienceList: [{
-        role: string, // (e.g Software developer)
-        duration: string, // (e.g 2012 - 2020)
+        id: uuid, // unique id
+        company: string, // Company name
+        title: string, // (e.g Software developer)
+        duration: { // Duration worked on this company
+          from: {
+            month: string, // default 'Jan'
+            year: string 
+          },
+          to: {
+            month: string, // default 'Dec'
+            year: string
+          },
+        },
         summary: string, // summarize the work experience and keep it concise
       }],
-      educationList: [{
-        stream: string, // (e.g: B.Tech in ECE - JNTU Hyderabad)
-        percentage?: string, // (e.g 70% Aggregate)
+      educationList: [{                     
+        id: uuid,
+        degree: "", // (e.g: Bachelor's in Computer Science)
+        institute: string, // (e.g: XYZ University)
+        yearOfCompletion: string,
       }],
-      skills: [{
-        name: string, // classification name (e.g: Source Control & CI/CD, methodologies)
-        tags: [string], // skills (e.g: Salesforce, Rest API, Git)
-      }], // Classify the skills
-      certifications: [string], // certification name
-    """
+      hobbies: "",
+      coverLetter: "",
+    ""
 
-    For any field If you can't find exact details from pdf try to calculate from provided details.
-    (e.g) Let's say you can't find years of experience in pdf, try to calculate the years by adding the years from the work expereience timeline.
+    For experience duration,
+    Provide month in three letter format like 'Jan', 'Feb'.
+    Provide a valid year in string.
 
-    Always add + to the yearsOfExperience. current date ${Date.now()}
+    I'm going to populate a HTML form using this json.
 
-    Don't included any extra words about generated response. Just give me the JSON string.
+    For any field If you can't extract details from pdf provide default values to them like empty string.
+
+    Don't include any extra words about generated response. Just give me the JSON string.
     return JSON string which is valid for NodeJS JSON.parse method;
   `;
 
 module.exports = prompt;
+
+// yearsOfExperience: string // Years of experience. e.g(2+ years of experience)
+
+// skills: [{
+//   name: string, // classification name (e.g: Source Control & CI/CD, methodologies)
+//   tags: [string], // skills (e.g: Salesforce, Rest API, Git)
+// }], // Classify the skills
+// certifications: [string], // certification name

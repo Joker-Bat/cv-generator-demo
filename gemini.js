@@ -32,7 +32,7 @@ class GeminiModel {
     console.log("🚀 ~ fileResponse:", fileResponse);
 
     const generatedContent = await model.generateContent([
-      prompt,
+      prompt + `\n For your reference current date: ${new Date()} `,
       {
         fileData: {
           fileUri: fileResponse.uri,

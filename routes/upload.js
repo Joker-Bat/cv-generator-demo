@@ -45,7 +45,7 @@ router.post("/", upload.single("resume"), async (req, res, next) => {
     const uniqueId = randomUUID();
     dataStore.setJsonData(uniqueId, jsonData);
 
-    res.redirect(`/resume/${uniqueId}`);
+    res.status(200).json({ resumeId: uniqueId });
 
     // Removing file
     console.log("Removing file");
