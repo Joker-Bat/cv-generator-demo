@@ -5,15 +5,15 @@ const prompt = `
 
     For your reference I've mentioned structre of json I want as response
     """
-      firstname: string // Persons firstname
-      lastname: string // Persons lastname
-      role: string // Role of a person
+      firstname: string * // First name of a person
+      lastname: string * // Last name of a person
+      role: string * // Role of a person
       location: string // City name
-      gender: string // male or female
+      gender: string // male or female or prefer-not-to-disclose
       summary: string // Create summary from given data with around 80 words.
       contact: {
         email: string // email id
-        phone: string // include country code
+        phone: string // phone number with country code
       }
       experienceList: [{
         id: uuid, // unique id
@@ -48,6 +48,8 @@ const prompt = `
     I'm going to populate a HTML form using this json.
 
     For any field If you can't extract details from pdf provide default values to them like empty string.
+
+    Fields marked with * are required fields they can't be an empty string, double check the pdf file before sending the response
 
     Don't include any extra words about generated response. Just give me the JSON string.
     return JSON string which is valid for NodeJS JSON.parse method;

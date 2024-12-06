@@ -31,6 +31,7 @@ class OpenAIModel {
     console.log("Uploading file ...");
     const fileResponse = await this.#uploadFile(filePath);
     console.log("🚀 ~ fileResponse:", fileResponse);
+    const fileId = fileResponse.id;
 
     // Creaete assistant if not already present
     const assistants = await this.listAssistants();
@@ -48,9 +49,7 @@ class OpenAIModel {
         {
           role: "user",
           content: prompt,
-          attachments: [
-            { file_id: fileResponse.id, tools: [{ type: "file_search" }] },
-          ],
+          attachments: [{ file_id: fileId, tools: [{ type: "file_search" }] }],
         },
       ],
     });
