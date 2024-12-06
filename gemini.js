@@ -31,6 +31,9 @@ class GeminiModel {
     const fileResponse = await this.#uploadFile(filePath);
     console.log("🚀 ~ fileResponse:", fileResponse);
 
+    // Giving some time before accessing the file
+    await new Promise(res => setTimeout(res, 1000));
+
     const generatedContent = await model.generateContent([
       prompt + `\n For your reference current date: ${new Date()} `,
       {

@@ -33,6 +33,9 @@ class OpenAIModel {
     console.log("🚀 ~ fileResponse:", fileResponse);
     const fileId = fileResponse.id;
 
+    // Giving some time before accessing the file
+    await new Promise(res => setTimeout(res, 1000));
+
     // Creaete assistant if not already present
     const assistants = await this.listAssistants();
 

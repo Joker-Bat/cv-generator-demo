@@ -22,11 +22,11 @@ const prompt = `
         duration: { // Duration worked on this company
           from: {
             month: string, // default 'Jan'
-            year: string 
+            year: number 
           },
           to: {
             month: string, // default 'Dec'
-            year: string
+            year: number
           },
         },
         summary: string, // summarize the work experience and keep it concise
@@ -41,15 +41,13 @@ const prompt = `
       coverLetter: "",
     ""
 
+    Fields marked with * are required fields they can't be an empty string, double check the pdf file for those details
+
     For experience duration,
     Provide month in three letter format like 'Jan', 'Feb'.
-    Provide a valid year in string.
+    Provide valid year in 4 digit number. (e.g 2024)
 
     I'm going to populate a HTML form using this json.
-
-    For any field If you can't extract details from pdf provide default values to them like empty string.
-
-    Fields marked with * are required fields they can't be an empty string, double check the pdf file before sending the response
 
     Don't include any extra words about generated response. Just give me the JSON string.
     return JSON string which is valid for NodeJS JSON.parse method;
