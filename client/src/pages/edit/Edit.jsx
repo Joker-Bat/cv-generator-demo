@@ -243,7 +243,7 @@ const Edit = () => {
               </div>
 
               {/* <!-- Education --> */}
-              <div className="mb-4">
+              <div className="mb-4" id={EDIT_PAGE_SECTIONS.EDUCATION}>
                 <h2 className="text-lg font-semibold text-purple-500 mb-2">
                   Education
                 </h2>

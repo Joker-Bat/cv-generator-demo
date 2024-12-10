@@ -215,6 +215,30 @@ const Profile = () => {
             </span>
           </div>
 
+          {/* <!-- Education --> */}
+          <div className="bg-gray-50 rounded-lg shadow p-4 relative">
+            <h2 className="text-lg font-semibold text-indigo-500 mb-2">
+              Education
+            </h2>
+            <ul className="space-y-2 text-sm text-gray-600">
+              {user.educationList.map(edu => {
+                return (
+                  <li key={edu.id}>
+                    <strong>{edu.degree}</strong> from
+                    <strong> {edu.institute}</strong> in
+                    <strong> {edu.yearOfCompletion}</strong>
+                  </li>
+                );
+              })}
+            </ul>
+
+            <span
+              onClick={() => navigateToEditForm(EDIT_PAGE_SECTIONS.EDUCATION)}
+            >
+              <i className="fas fa-pencil-alt absolute top-4 right-4 text-gray-500 hover:text-gray-700 cursor-pointer"></i>
+            </span>
+          </div>
+
           {/* <!-- AI Interview --> */}
           <div className="bg-gray-50 rounded-lg shadow p-4">
             <h2 className="text-lg font-semibold text-indigo-500 mb-2">

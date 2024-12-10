@@ -3,6 +3,7 @@ const EDIT_PAGE_SECTIONS = {
   CONTACT_INFO: "contactInfo",
   PROFILE_SUMMARY: "profileSummary",
   WORK_EXPERIENCE: "workExperience",
+  EDUCATION: "education",
 };
 
 export { EDIT_PAGE_SECTIONS };
