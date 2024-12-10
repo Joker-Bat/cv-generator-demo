@@ -68,6 +68,10 @@ const GENDER_ENUM = {
   "prefer-not-to-disclose": "prefer-not-to-disclose",
 };
 
+const LOCALSTORAGE_KEYS = {
+  RESUME_ID: "RESUME_ID",
+};
+
 export {
   getYearOptions,
   getMonthOptions,
@@ -75,4 +79,5 @@ export {
   getEducationStructure,
   getUserStructure,
   GENDER_ENUM,
+  LOCALSTORAGE_KEYS,
 };

@@ -44,4 +44,4 @@ const EducationForm = ({
   );
 };
 
-export default EducationForm;
+export { EducationForm };

@@ -4,7 +4,12 @@ class DataStore {
   }
 
   getJsonData(key) {
-    return this.jsonStore[key];
+    const value = this.jsonStore[key];
+    if (value && Object.keys(value).length === 0) {
+      return null;
+    }
+
+    return value;
   }
 
   setJsonData(key, value) {

@@ -1,60 +1,29 @@
-import { useCallback, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
+import { useUser } from "./useUser";
 import {
   getEducationStructure,
   getExperienceStructure,
-  getUserStructure,
+  LOCALSTORAGE_KEYS,
 } from "../utils";
 
-const USER_STRUCTURE = getUserStructure();
-
 const useUserData = () => {
-  const signalController = useRef();
-  const [userData, setUserData] = useState(USER_STRUCTURE);
-  const [loading, setLoading] = useState(false);
+  const { user, isLoading, isError } = useUser(
+    localStorage.getItem(LOCALSTORAGE_KEYS.RESUME_ID)
+  );
+
+  const [userData, setUserData] = useState(null);
   const [errorText, setErrorText] = useState("");
-  const [notFound, setNotFound] = useState(true);
 
-  const handleFetchUserData = useCallback(async resumeId => {
-    try {
-      setErrorText("");
-      setLoading(true);
-      setNotFound(false);
+  useEffect(() => {
+    setUserData(user);
+  }, [user]);
 
-      // Abort previous requests
-      if (signalController.current) {
-        signalController.current.abort("new request made");
-      }
-
-      signalController.current = new AbortController();
-
-      const response = await fetch(`/api/resume/${resumeId}`, {
-        signal: signalController.current.signal,
-      });
-
-      if (response.status !== 200) {
-        if (response.status === 404) {
-          setNotFound(true);
-        }
-        throw new Error(await response.text());
-      }
-
-      const { data } = await response.json();
-      console.log("🚀 ~ data:", data);
-      setNotFound(false);
-      setUserData(data);
-      setErrorText("");
-      return data;
-    } catch (err) {
-      let errorMessage = "Error getting user resume...";
-      if (err.message) {
-        errorMessage = err.message;
-      }
-      setErrorText(errorMessage);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (isError) {
+      setErrorText(isError.message);
     }
-  }, []);
+  }, [isError]);
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -157,8 +126,7 @@ const useUserData = () => {
 
   return {
     userData,
-    loading,
-    notFound,
+    loading: isLoading,
     errorText,
     setErrorText,
     handleChange,
@@ -170,8 +138,8 @@ const useUserData = () => {
     handleAddExperience,
     handleRemoveEducation,
     handleRemoveExperience,
-    handleFetchUserData,
+    // handleFetchUserData,
   };
 };
 
-export default useUserData;
+export { useUserData };

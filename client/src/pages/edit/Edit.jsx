@@ -1,22 +1,28 @@
-import { Link, useParams } from "react-router-dom";
-
-import { GENDER_ENUM } from "../../utils";
-import useUserData from "../../hooks/useUserData";
-import ExperienceForm from "../../components/ExperienceForm";
-import EducationForm from "../../components/EducationForm";
 import { useEffect } from "react";
-import Loader from "../../components/Loader";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
-const Resume = () => {
-  const { resumeId } = useParams();
+import { GENDER_ENUM, LOCALSTORAGE_KEYS } from "../../utils";
+import { useUserData } from "../../hooks/useUserData";
+import { ExperienceForm } from "../../components/ExperienceForm";
+import { EducationForm } from "../../components/EducationForm";
+import { Loader } from "../../components/Loader";
+import { EDIT_PAGE_SECTIONS } from "./constants";
+import { useUpdateUser } from "../../hooks/useUpdateUser";
+import { UserNotFound } from "../../components/UserNotFound";
+
+const Edit = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { loading: updating, updateUser } = useUpdateUser(
+    localStorage.getItem(LOCALSTORAGE_KEYS.RESUME_ID)
+  );
 
   const {
     userData,
     loading,
-    notFound,
     errorText,
-    setErrorText,
-    handleFetchUserData,
+    // setErrorText, //* INFO: Use to display errormessage at bottom
     handleChange,
     handleContactChange,
     handleChangeExperience,
@@ -29,34 +35,57 @@ const Resume = () => {
   } = useUserData();
 
   useEffect(() => {
-    if (!resumeId) {
-      return setErrorText("Can't find resumeId");
+    // To handle scrolling to sections when navigating from other screen
+    if (loading) return;
+
+    const sectionId = location.state?.section;
+
+    if (sectionId) {
+      let timeoutId = setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const offset = 100;
+          const y =
+            element.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top: y, behavior: "smooth" });
+        }
+      }, 100);
+
+      return () => clearTimeout(timeoutId);
     }
-    const fetchUser = async () => {
-      await handleFetchUserData(resumeId);
-    };
+  }, [location.state, loading]);
 
-    fetchUser();
-  }, [handleFetchUserData, resumeId, setErrorText]);
-
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
     console.log("userData: ", userData);
+    await updateUser(userData);
+    navigate("/user/profile");
   };
+
+  // console.log("userData: ", userData);
+
+  if (loading) {
+    return (
+      <div className="w-full h-full fixed inset-0 flex items-center justify-center bg-black/50 z-10">
+        <Loader />
+      </div>
+    );
+  }
+
+  if (!userData || Object.keys(userData).length === 0) {
+    return <UserNotFound />;
+  }
 
   return (
     <>
-      {loading && (
-        <div className="w-full h-full fixed inset-0 flex items-center justify-center bg-black/50 z-10">
-          <Loader />
-        </div>
-      )}
-
       {/* // <!-- Navbar --> */}
-      <nav className="flex justify-between items-center p-4 bg-white shadow-sm">
+      <nav className="flex justify-between items-center p-4 bg-white shadow-sm sticky top-0">
         <div className="text-gray-800 font-bold text-lg">ZJobs.ai</div>
-        <Link to="/" className="text-gray-800 font-medium hover:underline">
+        <Link
+          to="/user/profile"
+          className="text-gray-800 font-medium hover:underline"
+        >
           Back to Profile
         </Link>
       </nav>
@@ -86,8 +115,8 @@ const Resume = () => {
           <h1 className="text-xl font-bold text-gray-800 mb-4">Edit Profile</h1>
           <form onSubmit={handleSubmit}>
             {/* <!-- Personal Details --> */}
-            <fieldset disabled={loading || notFound}>
-              <div className="mb-4">
+            <fieldset disabled={loading || !userData}>
+              <div className="mb-4" id={EDIT_PAGE_SECTIONS.PERSONAL_DETAILS}>
                 <h2 className="text-lg font-semibold text-purple-500 mb-2">
                   Personal Details
                 </h2>
@@ -149,7 +178,7 @@ const Resume = () => {
               </div>
 
               {/* <!-- Profile Summary --> */}
-              <div className="mb-4">
+              <div className="mb-4" id={EDIT_PAGE_SECTIONS.PROFILE_SUMMARY}>
                 <h2 className="text-lg font-semibold text-purple-500 mb-2">
                   Profile Summary
                 </h2>
@@ -163,7 +192,7 @@ const Resume = () => {
               </div>
 
               {/* <!-- Contact Info --> */}
-              <div className="mb-4">
+              <div className="mb-4" id={EDIT_PAGE_SECTIONS.CONTACT_INFO}>
                 <h2 className="text-lg font-semibold text-purple-500 mb-2">
                   Contact Information
                 </h2>
@@ -186,7 +215,7 @@ const Resume = () => {
               </div>
 
               {/* <!-- Work Experience --> */}
-              <div className="mb-4">
+              <div className="mb-4" id={EDIT_PAGE_SECTIONS.WORK_EXPERIENCE}>
                 <h2 className="text-lg font-semibold text-purple-500 mb-2">
                   Work Experience
                 </h2>
@@ -273,6 +302,7 @@ const Resume = () => {
               {/* <!-- Submit Button --> */}
               <div className="mt-6">
                 <button
+                  disabled={updating}
                   type="submit"
                   className="bg-purple-500 text-white font-medium px-6 py-2 rounded-full shadow enabled:hover:bg-purple-600 text-sm disabled:opacity-50"
                 >
@@ -293,4 +323,4 @@ const Resume = () => {
   );
 };
 
-export default Resume;
+export { Edit };

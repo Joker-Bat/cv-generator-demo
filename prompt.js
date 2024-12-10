@@ -37,6 +37,10 @@ const prompt = `
         institute: string, // (e.g: XYZ University)
         yearOfCompletion: string,
       }],
+      skills: [{
+        name: string, // classification name (e.g: Source Control & CI/CD, methodologies)
+        tags: [string], // skills (e.g: Salesforce, Rest API, Git)
+      }], // Classify the skills
       hobbies: "",
       coverLetter: "",
     ""
