@@ -7,6 +7,7 @@ import { LOCALSTORAGE_KEYS } from "../../utils";
 import { useNavigate } from "react-router-dom";
 import { EDIT_PAGE_SECTIONS } from "../edit/constants";
 import { UserNotFound } from "../../components/UserNotFound";
+import { Education } from "../../components/Profile";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -220,15 +221,10 @@ const Profile = () => {
             <h2 className="text-lg font-semibold text-indigo-500 mb-2">
               Education
             </h2>
+
             <ul className="space-y-2 text-sm text-gray-600">
-              {user.educationList.map(edu => {
-                return (
-                  <li key={edu.id}>
-                    <strong>{edu.degree}</strong> from
-                    <strong> {edu.institute}</strong> in
-                    <strong> {edu.yearOfCompletion}</strong>
-                  </li>
-                );
+              {user.educationList.map(ed => {
+                return <Education key={ed.id} education={ed} />;
               })}
             </ul>
 

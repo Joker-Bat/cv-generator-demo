@@ -13,13 +13,13 @@ const prompt = `
       summary: string // Create summary from given data with around 80 words.
       contact: {
         email: string // email id
-        phone: string // phone number with country code
+        phone: string // phone number with country code if not found put empty string
       }
       experienceList: [{
         id: uuid, // unique id
         company: string, // Company name
         title: string, // (e.g Software developer)
-        duration: { // Duration worked on this company
+        duration: { // Duration worked on this company both month and year has to valid or put empty string
           from: {
             month: string, // default 'Jan'
             year: number 
@@ -31,11 +31,11 @@ const prompt = `
         },
         summary: string, // summarize the work experience and keep it concise
       }],
-      educationList: [{                     
+      educationList: [{
         id: uuid,
         degree: "", // (e.g: Bachelor's in Computer Science)
         institute: string, // (e.g: XYZ University)
-        yearOfCompletion: string,
+        yearOfCompletion: string, // Valid year of completion or put empty string
       }],
       skills: [{
         name: string, // classification name (e.g: Source Control & CI/CD, methodologies)
