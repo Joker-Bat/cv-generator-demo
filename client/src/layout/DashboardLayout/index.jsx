@@ -2,14 +2,13 @@ import { useEffect } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { LOCALSTORAGE_KEYS } from "../../utils";
 
-const CandidateLayout = () => {
+const DashboardLayout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const resumeId = localStorage.getItem(LOCALSTORAGE_KEYS.RESUME_ID);
+    const resumeId = localStorage.getItem(LOCALSTORAGE_KEYS.USER_ID);
 
     if (!resumeId) {
-      alert("ResumeId not found"); // TODO: Remove this alert
       navigate("/");
     }
   }, [navigate]);
@@ -100,4 +99,4 @@ const CandidateLayout = () => {
   );
 };
 
-export { CandidateLayout };
+export { DashboardLayout };

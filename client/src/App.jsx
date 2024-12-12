@@ -1,12 +1,9 @@
-import { Route, Routes } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
 import { SWRConfig } from "swr";
 
 import "./App.css";
-import { CandidateLayout } from "./layout/CandidateLayout";
-import { Upload } from "./pages/upload";
-import { Edit } from "./pages/edit";
-import { Profile } from "./pages/profile";
-import { Auth } from "./HOC/Auth";
+import { router } from "./routes/router";
+import { LOCALSTORAGE_KEYS } from "./utils";
 
 function App() {
   return (
@@ -18,17 +15,16 @@ function App() {
             if (retryCount >= 3) return;
             setTimeout(() => revalidate({ retryCount }), 5000);
           },
+          onError: error => {
+            console.log("Error: ", error.status);
+            if (error.status === 404) {
+              localStorage.removeItem(LOCALSTORAGE_KEYS.USER_ID);
+              router.navigate("/login");
+            }
+          },
         }}
       >
-        <Routes>
-          <Route path="/" element={<Upload />} />
-          <Route path="/user" element={<Auth />}>
-            <Route path="profile" element={<CandidateLayout />}>
-              <Route index element={<Profile />} />
-            </Route>
-            <Route path="edit" element={<Edit />} />
-          </Route>
-        </Routes>
+        <RouterProvider router={router} />
       </SWRConfig>
     </>
   );

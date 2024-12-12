@@ -15,7 +15,7 @@ const Edit = () => {
   const navigate = useNavigate();
 
   const { loading: updating, updateUser } = useUpdateUser(
-    localStorage.getItem(LOCALSTORAGE_KEYS.RESUME_ID)
+    localStorage.getItem(LOCALSTORAGE_KEYS.USER_ID)
   );
 
   const {

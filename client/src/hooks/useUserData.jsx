@@ -11,7 +11,7 @@ import {
 
 const useUserData = () => {
   const { user, isLoading, isError } = useUser(
-    localStorage.getItem(LOCALSTORAGE_KEYS.RESUME_ID)
+    localStorage.getItem(LOCALSTORAGE_KEYS.USER_ID)
   );
 
   const [userData, setUserData] = useState(null);

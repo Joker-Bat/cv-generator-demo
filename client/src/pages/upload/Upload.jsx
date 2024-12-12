@@ -128,7 +128,7 @@ const Upload = () => {
       const jsonData = await response.json();
       console.log("🚀 ~ res:", jsonData);
       setLoading(false);
-      localStorage.setItem(LOCALSTORAGE_KEYS.RESUME_ID, jsonData.resumeId);
+      localStorage.setItem(LOCALSTORAGE_KEYS.USER_ID, jsonData.resumeId);
       navigate("/user/profile");
     } catch (error) {
       setStatusText("Error uploading resume.");

@@ -6,6 +6,9 @@ export default {
       colors: {
         "disabled-input": "rgba(239, 239, 239, 0.3)",
       },
+      backgroundImage: {
+        "login-abstract": "url('/images/abstract.webp')",
+      },
     },
   },
   plugins: [],

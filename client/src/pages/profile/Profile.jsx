@@ -13,7 +13,7 @@ const Profile = () => {
   const navigate = useNavigate();
 
   const { user, isLoading } = useUser(
-    localStorage.getItem(LOCALSTORAGE_KEYS.RESUME_ID)
+    localStorage.getItem(LOCALSTORAGE_KEYS.USER_ID)
   );
 
   useEffect(() => {
