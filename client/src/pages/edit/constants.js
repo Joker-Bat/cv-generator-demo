@@ -4,6 +4,7 @@ const EDIT_PAGE_SECTIONS = {
   PROFILE_SUMMARY: "profileSummary",
   WORK_EXPERIENCE: "workExperience",
   EDUCATION: "education",
+  SKILLS: "skills",
 };
 
 export { EDIT_PAGE_SECTIONS };

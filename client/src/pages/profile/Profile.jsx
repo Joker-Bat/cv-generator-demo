@@ -131,7 +131,7 @@ const Profile = () => {
           </div>
 
           {/* <!-- Skills --> */}
-          <div className="bg-gray-50 rounded-lg shadow p-4">
+          <div className="bg-gray-50 rounded-lg shadow p-4 relative">
             <h2 className="text-lg font-semibold text-indigo-500">Skills</h2>
             {user.skills.map((skill, index) => {
               return (
@@ -149,10 +149,10 @@ const Profile = () => {
 
                       return (
                         <span
-                          key={tag}
+                          key={tag.id}
                           className={"px-2 py-1 rounded-full shadow " + colors}
                         >
-                          {tag}
+                          {tag.skill}
                         </span>
                       );
                     })}
@@ -160,6 +160,10 @@ const Profile = () => {
                 </React.Fragment>
               );
             })}
+
+            <span onClick={() => navigateToEditForm(EDIT_PAGE_SECTIONS.SKILLS)}>
+              <i className="fas fa-pencil-alt absolute top-4 right-4 text-gray-500 hover:text-gray-700 cursor-pointer"></i>
+            </span>
           </div>
 
           {/* <!-- Self-Rating Skills --> */}
@@ -196,13 +200,6 @@ const Profile = () => {
                     Duration: {getFormatedDurationString(exp.duration)}
                   </p>
                   <p className="text-gray-700 text-sm">{exp.summary}</p>
-                  {/* <ul className="list-disc list-inside text-gray-700 text-sm">
-                    <li>{exp.summary}</li>
-                    <li>
-                      Reduced testing time by 30% through efficient test case
-                      design.
-                    </li>
-                  </ul> */}
                 </div>
               );
             })}

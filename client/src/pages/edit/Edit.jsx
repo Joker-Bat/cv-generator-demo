@@ -32,6 +32,12 @@ const Edit = () => {
     handleAddExperience,
     handleRemoveEducation,
     handleRemoveExperience,
+    handleAddSkill,
+    handleAddSkillGroup,
+    handleRemoveSkillGroup,
+    handleChangeSkillGroupName,
+    handleChangeSkill,
+    validateAllFields,
   } = useUserData();
 
   useEffect(() => {
@@ -58,12 +64,30 @@ const Edit = () => {
   const handleSubmit = async e => {
     e.preventDefault();
 
-    console.log("userData: ", userData);
-    await updateUser(userData);
-    navigate("/user/profile");
+    // Currently filtering empty skill name
+    const finalData = getFinalJSON(userData);
+    const valid = validateAllFields(finalData);
+
+    if (valid) {
+      await updateUser(finalData);
+      navigate("/user/profile");
+    }
   };
 
-  // console.log("userData: ", userData);
+  const getFinalJSON = data => {
+    return {
+      ...data,
+      skills: data.skills.map(skillGroup => {
+        return {
+          ...skillGroup,
+          // Filter empty skills in group
+          tags: skillGroup.tags.filter(tag => {
+            return tag.skill !== "";
+          }),
+        };
+      }),
+    };
+  };
 
   if (loading) {
     return (
@@ -266,6 +290,74 @@ const Edit = () => {
                   className="text-blue-500 text-sm enabled:hover:underline"
                 >
                   Add Degree
+                </button>
+              </div>
+
+              {/* <!-- Skills Section --> */}
+              <div className="mb-4" id={EDIT_PAGE_SECTIONS.SKILLS}>
+                <h2 className="text-lg font-semibold text-indigo-500 mb-2">
+                  Skills
+                </h2>
+                <div id="skills-container">
+                  {userData.skills.map(skillGroup => {
+                    return (
+                      <div
+                        key={skillGroup.id}
+                        className="bg-gray-50 rounded-lg shadow p-4 mb-2"
+                      >
+                        <input
+                          type="text"
+                          placeholder="Skill Group (e.g., Technical Skills)"
+                          value={skillGroup.name}
+                          onChange={event =>
+                            handleChangeSkillGroupName(skillGroup.id, event)
+                          }
+                          className="w-full mb-2 p-2 border rounded-md text-sm"
+                        />
+                        <div className="flex flex-wrap gap-1 mb-2">
+                          {skillGroup.tags.map(tag => {
+                            return (
+                              <input
+                                key={tag.id}
+                                type="text"
+                                placeholder="Skill (e.g., Automation Testing)"
+                                className="w-full p-2 border rounded-md text-sm mb-2"
+                                value={tag.skill}
+                                onChange={event =>
+                                  handleChangeSkill(
+                                    skillGroup.id,
+                                    tag.id,
+                                    event
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleAddSkill(skillGroup.id)}
+                          className="text-blue-500 text-sm hover:underline"
+                        >
+                          Add Skill
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveSkillGroup(skillGroup.id)}
+                          className="text-red-500 text-sm hover:underline ml-2"
+                        >
+                          Remove Group
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+                <button
+                  type="button"
+                  onClick={handleAddSkillGroup}
+                  className="text-blue-500 text-sm hover:underline"
+                >
+                  Add Skill Group
                 </button>
               </div>
 

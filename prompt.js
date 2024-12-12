@@ -36,10 +36,16 @@ const prompt = `
         degree: "", // (e.g: Bachelor's in Computer Science)
         institute: string, // (e.g: XYZ University)
         yearOfCompletion: string, // Valid year of completion or put empty string
+        scoreType: "percentage" | "cgpa", // Put empty string if can't find percentage or cgpa 
+        score: string, // Value of the percentage or cgpa put empty string if can't find
       }],
       skills: [{
+        id: uuid,
         name: string, // classification name (e.g: Source Control & CI/CD, methodologies)
-        tags: [string], // skills (e.g: Salesforce, Rest API, Git)
+        tags: [{
+          id: uuid,
+          skill: string, // Skill name
+        }], // skills (e.g: Salesforce, Rest API, Git)
       }], // Classify the skills
       hobbies: "",
       coverLetter: "",

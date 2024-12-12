@@ -43,6 +43,21 @@ const getExperienceStructure = () => {
   };
 };
 
+const getSkillGroupStructure = () => {
+  return {
+    id: Date.now(),
+    name: "",
+    tags: [getSkillStructure()],
+  };
+};
+
+const getSkillStructure = () => {
+  return {
+    id: Date.now(),
+    skill: "",
+  };
+};
+
 const getUserStructure = () => {
   return {
     firstname: "",
@@ -68,6 +83,11 @@ const GENDER_ENUM = {
   "prefer-not-to-disclose": "prefer-not-to-disclose",
 };
 
+const EDUCATION_SCORE_TYPE_ENUM = {
+  percentage: "percentage",
+  cgpa: "cgpa",
+};
+
 const LOCALSTORAGE_KEYS = {
   RESUME_ID: "RESUME_ID",
 };
@@ -78,6 +98,9 @@ export {
   getExperienceStructure,
   getEducationStructure,
   getUserStructure,
+  getSkillGroupStructure,
+  getSkillStructure,
   GENDER_ENUM,
   LOCALSTORAGE_KEYS,
+  EDUCATION_SCORE_TYPE_ENUM,
 };
