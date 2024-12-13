@@ -17,7 +17,7 @@ function App() {
           },
           onError: error => {
             console.log("Error: ", error.status);
-            if (error.status === 404) {
+            if (error.status === 401) {
               localStorage.removeItem(LOCALSTORAGE_KEYS.USER_ID);
               router.navigate("/login");
             }

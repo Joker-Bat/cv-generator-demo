@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 
-import { useUser } from "../../hooks/useUser";
+import { useUser } from "../../data/hooks";
 import { Loader } from "../../components/Loader";
 import { getFormatedDurationString } from "../../utils/helpers";
-import { LOCALSTORAGE_KEYS } from "../../utils";
 import { useNavigate } from "react-router-dom";
 import { EDIT_PAGE_SECTIONS } from "../edit/constants";
 import { UserNotFound } from "../../components/UserNotFound";
@@ -12,9 +11,7 @@ import { Education } from "../../components/Profile";
 const Profile = () => {
   const navigate = useNavigate();
 
-  const { user, isLoading } = useUser(
-    localStorage.getItem(LOCALSTORAGE_KEYS.USER_ID)
-  );
+  const { userDetails, isLoading, notFound } = useUser();
 
   useEffect(() => {
     if (isLoading) return;
@@ -37,9 +34,11 @@ const Profile = () => {
     );
   }
 
-  if (!user || Object.keys(user).length === 0) {
+  if (notFound) {
     return <UserNotFound />;
   }
+
+  const { profileDetails: user } = userDetails;
 
   return (
     <main className="col-span-4 bg-white rounded-lg shadow-lg p-6">

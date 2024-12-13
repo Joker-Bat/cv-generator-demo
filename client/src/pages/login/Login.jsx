@@ -1,10 +1,20 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { useLogin } from "../../data/hooks";
+import { useVerifyOTP } from "../../data/hooks";
+import { LOCALSTORAGE_KEYS } from "../../utils";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [otp, setOTP] = useState("");
-  const [emailSubmitted, setEmailSubmitted] = useState(true);
+  const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [errorText, setErrorText] = useState("");
+
+  const { loading: loginLoading, login } = useLogin();
+  const { loading: verifyLoading, verifyOTP } = useVerifyOTP();
 
   const handleChangeEmail = event => {
     setEmail(event.target.value);
@@ -14,17 +24,42 @@ const Login = () => {
     setOTP(event.target.value);
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
     setErrorText("");
 
-    if (!emailSubmitted) {
-      setEmailSubmitted(true);
-      return;
-    }
+    try {
+      // Verify email
+      if (!email) {
+        setErrorText("Provide valid email");
+        return;
+      }
 
-    if (otp.length !== 6) {
-      setErrorText("OTP has to be 6 digit");
+      // Submit the email to get otp
+      if (!emailSubmitted) {
+        await login({ email });
+        setEmailSubmitted(true);
+        return;
+      }
+
+      if (otp.length !== 6) {
+        setErrorText("OTP has to be 6 digit");
+      }
+      const data = await verifyOTP({ email, otp });
+      localStorage.setItem(LOCALSTORAGE_KEYS.USER_ID, data.userId);
+
+      if (data.hasProfileData) {
+        navigate("/user/profile");
+      } else {
+        navigate("/user/upload");
+      }
+    } catch (err) {
+      console.log("🚀 ~ err:", err);
+      if (err.status === 400) {
+        setErrorText(err.message);
+      } else {
+        setErrorText("Something went wrong!");
+      }
     }
   };
 
@@ -35,7 +70,7 @@ const Login = () => {
       </nav>
 
       <main className="flex items-center justify-center min-h-screen px-4 py-8">
-        <div className="flex flex-col md:flex-row bg-white rounded-lg shadow-md w-full max-w-5xl h-[500px]">
+        <div className="flex flex-col md:flex-row bg-white rounded-lg shadow-md w-full max-w-5xl min-h-[500px]">
           {/* <!-- Left Side: Benefits --> */}
           <div
             className="w-full md:w-1/2 bg-cover bg-center bg-no-repeat p-6 rounded-l-lg bg-login-abstract"
@@ -66,62 +101,66 @@ const Login = () => {
                 Enter your email below. We&apos;ll send you an OTP to log in.
               </p>
 
-              <div className="">
+              <div className="h-full">
                 <form onSubmit={handleSubmit}>
-                  <div className="mb-6">
-                    <label
-                      htmlFor="entered-email"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={email}
-                      className={`mt-2 w-full border-gray-300 rounded-lg shadow-sm text-sm px-4 py-2 
+                  <fieldset disabled={loginLoading || verifyLoading}>
+                    <div className="mb-6">
+                      <label
+                        htmlFor="entered-email"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Email
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={email}
+                        className={`mt-2 w-full border-gray-300 rounded-lg shadow-sm text-sm px-4 py-2 
                         ${
                           emailSubmitted
                             ? " bg-gray-100 text-gray-500"
                             : " focus:ring-indigo-500 focus:border-indigo-500"
                         }`}
-                      onChange={handleChangeEmail}
-                      disabled={emailSubmitted}
-                      required
-                    />
-                  </div>
-                  {emailSubmitted && (
-                    <div className="mb-4">
-                      <label
-                        htmlFor="otp"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        OTP
-                      </label>
-                      <input
-                        type="text"
-                        name="otp"
-                        placeholder="6 digit OTP"
-                        className="mt-2 w-full border-gray-300 rounded-lg shadow-sm text-sm px-4 py-2 focus:ring-indigo-500 focus:border-indigo-500"
-                        value={otp}
-                        onChange={handleOTPChange}
+                        onChange={handleChangeEmail}
+                        disabled={emailSubmitted}
                         required
                       />
-                      <p className="text-sm text-gray-600 mt-2">
-                        Please check your email (and spam folder) for the OTP.
-                      </p>
-
-                      {errorText && (
-                        <p className="text-sm text-red-600 mt-4">{errorText}</p>
-                      )}
                     </div>
-                  )}
-                  <button
-                    type="submit"
-                    className="w-full bg-indigo-500 text-white font-medium px-4 py-2 rounded-lg shadow-sm hover:bg-indigo-600 text-sm"
-                  >
-                    {emailSubmitted ? "Log In" : "Send OTP"}
-                  </button>
+                    {emailSubmitted && (
+                      <div className="mb-4">
+                        <label
+                          htmlFor="otp"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          OTP
+                        </label>
+                        <input
+                          type="text"
+                          name="otp"
+                          placeholder="6 digit OTP"
+                          className="mt-2 w-full border-gray-300 rounded-lg shadow-sm text-sm px-4 py-2 focus:ring-indigo-500 focus:border-indigo-500"
+                          value={otp}
+                          onChange={handleOTPChange}
+                          required
+                        />
+                        <p className="text-sm text-gray-600 mt-2">
+                          Please check your email (and spam folder) for the OTP.
+                        </p>
+
+                        {errorText && (
+                          <p className="text-sm text-red-600 mt-4">
+                            {errorText}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                    <button
+                      type="submit"
+                      className="w-full bg-indigo-500 text-white font-medium px-4 py-2 rounded-lg shadow-sm hover:bg-indigo-600 text-sm"
+                    >
+                      {emailSubmitted ? "Log In" : "Send OTP"}
+                    </button>
+                  </fieldset>
                 </form>
               </div>
             </div>

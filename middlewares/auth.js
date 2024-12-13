@@ -4,8 +4,8 @@ const dataStore = require("../store");
 
 exports.authRequired = catchAsync(async (req, res, next) => {
   let userId;
-  if (req.headers["USER_ID"]) {
-    userId = req.headers["USER_ID"];
+  if (req.headers["user_id"]) {
+    userId = req.headers["user_id"];
   }
 
   if (!userId) {

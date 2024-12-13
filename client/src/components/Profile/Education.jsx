@@ -23,13 +23,13 @@ const Education = ({ education }) => {
           <span> with </span>
           {education.scoreType === EDUCATION_SCORE_TYPE_ENUM.percentage && (
             <>
-              <strong>{education.score}%</strong>
+              <strong>{education.score}%.</strong>
             </>
           )}
           {education.scoreType === EDUCATION_SCORE_TYPE_ENUM.cgpa && (
             <>
               <span>CGPA </span>
-              <strong>{education.score}</strong>
+              <strong>{education.score}.</strong>
             </>
           )}
         </>

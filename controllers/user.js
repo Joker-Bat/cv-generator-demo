@@ -31,11 +31,11 @@ exports.uploadUserResume = catchAsync(async (req, res, next) => {
   console.log("🚀 ~ jsonData:", jsonData);
   dataStore.updateProfileDetails(userId, jsonData);
 
-  res.status(200).json("User profile details updated");
-
   // Removing file
   console.log("Removing file");
   await deleteFile(filePath);
+
+  res.status(200).json("User profile details updated");
 });
 
 exports.getUserDetails = catchAsync(async (req, res, next) => {

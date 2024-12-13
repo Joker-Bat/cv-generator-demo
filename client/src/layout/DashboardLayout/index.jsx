@@ -1,18 +1,6 @@
-import { useEffect } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import { LOCALSTORAGE_KEYS } from "../../utils";
+import { Link, Outlet } from "react-router-dom";
 
 const DashboardLayout = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const resumeId = localStorage.getItem(LOCALSTORAGE_KEYS.USER_ID);
-
-    if (!resumeId) {
-      navigate("/");
-    }
-  }, [navigate]);
-
   return (
     <>
       <nav className="flex justify-between items-center p-4 bg-white shadow-sm">

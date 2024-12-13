@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { LOCALSTORAGE_KEYS } from "../../utils";
 import { NavBar } from "../../components/Upload";
+import { useUploadResume } from "../../data/hooks";
 
 const MODEL_OPTIONS = {
   gemini: "gemini",
@@ -12,6 +12,8 @@ const MODEL_OPTIONS = {
 const Upload = () => {
   const navigate = useNavigate();
 
+  const { loading, upload } = useUploadResume();
+
   const dropAreaRef = useRef();
   const fileInputRef = useRef();
   const termsAndConditionRef = useRef();
@@ -19,7 +21,7 @@ const Upload = () => {
   const [pdfFile, setPdfFile] = useState(null);
   const [statusText, setStatusText] = useState("");
   const [model] = useState(MODEL_OPTIONS.openai);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const dropArea = dropAreaRef.current;
@@ -105,10 +107,8 @@ const Upload = () => {
     e.preventDefault();
 
     const allFieldsValid = validateFields();
-
     if (!allFieldsValid) return;
 
-    setLoading(true);
     setStatusText("Uploading and processing...");
 
     const formData = new FormData();
@@ -116,25 +116,11 @@ const Upload = () => {
     formData.append("llm", model);
 
     try {
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (response.status !== 200) {
-        throw new Error(response.text());
-      }
-
-      const jsonData = await response.json();
-      console.log("🚀 ~ res:", jsonData);
-      setLoading(false);
-      localStorage.setItem(LOCALSTORAGE_KEYS.USER_ID, jsonData.resumeId);
+      await upload(formData);
       navigate("/user/profile");
     } catch (error) {
-      setStatusText("Error uploading resume.");
       console.error("Error:", error);
-    } finally {
-      setLoading(false);
+      setStatusText(error.message);
     }
   };
 

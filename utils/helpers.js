@@ -34,7 +34,7 @@ const savePdfFile = async file => {
 };
 
 const deleteFile = async path => {
-  await fs.unlink(filePath);
+  await fs.unlink(path);
 };
 
 module.exports = {
