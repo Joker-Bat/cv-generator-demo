@@ -1,3 +1,5 @@
+import { formatDistanceToNow } from "date-fns";
+
 const getFormatedDurationString = duration => {
   try {
     const fromDate = duration.from.month + " " + duration.from.year;
@@ -9,4 +11,8 @@ const getFormatedDurationString = duration => {
   }
 };
 
-export { getFormatedDurationString };
+const getHumanReadableTime = date => {
+  return formatDistanceToNow(new Date(date), { addSuffix: true });
+};
+
+export { getFormatedDurationString, getHumanReadableTime };

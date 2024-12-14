@@ -2,7 +2,10 @@ import React, { useEffect } from "react";
 
 import { useUser } from "../../data/hooks";
 import { Loader } from "../../components/Loader";
-import { getFormatedDurationString } from "../../utils/helpers";
+import {
+  getFormatedDurationString,
+  getHumanReadableTime,
+} from "../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import { EDIT_PAGE_SECTIONS } from "../edit/constants";
 import { UserNotFound } from "../../components/UserNotFound";
@@ -81,7 +84,7 @@ const Profile = () => {
               </div>
             </div>
             <p className="mt-2 text-gray-500 text-xs">
-              Last updated: 5 days ago
+              Last updated: {getHumanReadableTime(userDetails.updatedAt)}
             </p>
             <span
               onClick={() =>

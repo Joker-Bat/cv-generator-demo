@@ -12,6 +12,8 @@ import { DashboardLayout } from "../layout/DashboardLayout";
 import { Public } from "./public";
 import { Login } from "../pages/login";
 
+// TODO: Handle Common header
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
