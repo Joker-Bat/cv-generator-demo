@@ -28,7 +28,7 @@ const useUser = () => {
     userDetails: data?.data,
     isLoading,
     isError: error,
-    notFound: error?.status === 404,
+    notFound: !data?.data || error?.status === 404,
   };
 };
 

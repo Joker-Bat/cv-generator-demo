@@ -156,7 +156,7 @@ const Login = () => {
                     )}
                     <button
                       type="submit"
-                      className="w-full bg-indigo-500 text-white font-medium px-4 py-2 rounded-lg shadow-sm hover:bg-indigo-600 text-sm"
+                      className="w-full bg-indigo-500 text-white font-medium px-4 py-2 rounded-lg shadow-sm enabled:hover:bg-indigo-600 text-sm disabled:opacity-50"
                     >
                       {emailSubmitted ? "Log In" : "Send OTP"}
                     </button>

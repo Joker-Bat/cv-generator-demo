@@ -2,6 +2,7 @@ const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const { generateRandomOTP, isOTPExpired } = require("../utils/helpers");
 const dataStore = require("../store");
+const Email = require("../utils/email");
 
 const TEMP_STORE = {};
 
@@ -20,7 +21,13 @@ exports.login = catchAsync(async (req, res, next) => {
     createdAt: new Date().toISOString(),
   };
 
-  return res.status(200).json({ otp: OTP });
+  const template = `
+    <h1>Your OTP for verification: <strong>${OTP}</strong></h1>
+  `;
+
+  await Email.send(email, template);
+
+  return res.status(200).send("Verification OTP sent");
 });
 
 exports.verify = catchAsync(async (req, res, next) => {
