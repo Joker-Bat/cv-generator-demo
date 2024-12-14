@@ -1,55 +1,58 @@
-import { Link, Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 
 const DashboardLayout = () => {
   return (
     <>
-      <nav className="flex justify-between items-center p-4 bg-white shadow-sm">
-        <div className="text-gray-800 font-bold text-lg">ZJobs.ai</div>
-        <div className="relative">
-          <button
-            id="user-menu"
-            className="text-gray-800 font-medium hover:underline flex items-center space-x-2"
-          >
-            <i className="fas fa-user-circle"></i>
-            <span>User Menu</span>
-          </button>
-        </div>
-      </nav>
-
       <div className="container mx-auto px-4 py-6 grid grid-cols-5 gap-4 min-h-screen">
         <aside className="col-span-1 bg-gradient-to-br from-indigo-100 via-indigo-50 to-indigo-200 rounded-lg shadow p-4">
           <ul className="space-y-4">
             <li>
-              <Link
-                to="#"
-                className="text-gray-700 font-medium hover:text-indigo-500"
+              <NavLink
+                to="/user/dashboard"
+                className={({ isActive }) =>
+                  `text-gray-700 font-medium hover:text-indigo-500 ${
+                    isActive ? "text-indigo-500" : ""
+                  }`
+                }
               >
                 Dashboard
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link
-                to="#"
-                className="text-gray-700 font-medium hover:text-indigo-500"
+              <NavLink
+                to="/user/profile"
+                className={({ isActive }) =>
+                  `text-gray-700 font-medium hover:text-indigo-500 ${
+                    isActive ? "text-indigo-500" : ""
+                  }`
+                }
               >
                 Profile
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link
-                to="#"
-                className="text-gray-700 font-medium hover:text-indigo-500"
+              <NavLink
+                to="/user/interview"
+                className={({ isActive }) =>
+                  `text-gray-700 font-medium hover:text-indigo-500 ${
+                    isActive ? "text-indigo-500" : ""
+                  }`
+                }
               >
                 AI Interview
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link
-                to="#"
-                className="text-gray-700 font-medium hover:text-indigo-500"
+              <NavLink
+                to="/user/settings"
+                className={({ isActive }) =>
+                  `text-gray-700 font-medium hover:text-indigo-500 ${
+                    isActive ? "text-indigo-500" : ""
+                  }`
+                }
               >
                 Settings
-              </Link>
+              </NavLink>
             </li>
           </ul>
 

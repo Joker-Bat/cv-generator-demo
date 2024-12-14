@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { NavBar } from "../../components/Upload";
 import { useUploadResume } from "../../data/hooks";
 
 const MODEL_OPTIONS = {
@@ -126,9 +125,6 @@ const Upload = () => {
 
   return (
     <div className="bg-gray-100 text-gray-900">
-      {/* <!-- Navbar --> */}
-      <NavBar />
-
       {/* <!-- Main Content --> */}
       <main className="container mx-auto grid grid-cols-1 lg:grid-cols-3  px-4 py-8">
         {/* <!-- Column 1: Heading Section --> */}
