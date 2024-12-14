@@ -1,22 +1,20 @@
 import { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import { GENDER_ENUM, LOCALSTORAGE_KEYS } from "../../utils";
+import { GENDER_ENUM } from "../../utils";
 import { useUserData } from "../../hooks/useUserData";
 import { ExperienceForm } from "../../components/ExperienceForm";
 import { EducationForm } from "../../components/EducationForm";
 import { Loader } from "../../components/Loader";
 import { EDIT_PAGE_SECTIONS } from "./constants";
-import { useUpdateUser } from "../../hooks/useUpdateUser";
+import { useUpdateUser } from "../../data/hooks";
 import { UserNotFound } from "../../components/UserNotFound";
 
 const Edit = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { loading: updating, updateUser } = useUpdateUser(
-    localStorage.getItem(LOCALSTORAGE_KEYS.RESUME_ID)
-  );
+  const { loading: updating, updateUser } = useUpdateUser();
 
   const {
     userData,

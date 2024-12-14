@@ -89,7 +89,7 @@ const EDUCATION_SCORE_TYPE_ENUM = {
 };
 
 const LOCALSTORAGE_KEYS = {
-  RESUME_ID: "RESUME_ID",
+  USER_ID: "USER_ID",
 };
 
 export {

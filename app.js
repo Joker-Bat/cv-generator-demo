@@ -1,18 +1,14 @@
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-// var logger = require("morgan");
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
-// const exphbs = require("./exphbs");
-var indexRouter = require("./routes/index");
-var uploadRouter = require("./routes/upload");
+const globalErrorHandler = require("./middlewares/error");
+const authRouter = require("./routes/auth");
+const userRouter = require("./routes/user");
+const { authRequired } = require("./middlewares/auth");
 
-var app = express();
-
-// app.engine(".hbs", exphbs.engine);
-// app.set("view engine", ".hbs");
-// app.set("views", "./views");
+const app = express();
 
 // app.use(logger("dev"));
 app.use(express.json());
@@ -20,8 +16,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "/client/dist")));
 
-app.use("/api", indexRouter);
-app.use("/api/upload", uploadRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/user", authRequired, userRouter);
 
 // Catch all requests that don't match any route
 app.use("*", (req, res) => {
@@ -32,3 +28,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
 });
+
+app.use(globalErrorHandler);

@@ -1,25 +1,24 @@
 import { useEffect, useState } from "react";
 
-import { useUser } from "./useUser";
+import { useUser } from "../data/hooks";
 import {
   getEducationStructure,
   getExperienceStructure,
   getSkillGroupStructure,
   getSkillStructure,
-  LOCALSTORAGE_KEYS,
 } from "../utils";
 
 const useUserData = () => {
-  const { user, isLoading, isError } = useUser(
-    localStorage.getItem(LOCALSTORAGE_KEYS.RESUME_ID)
-  );
+  const { userDetails, isLoading, isError } = useUser();
 
   const [userData, setUserData] = useState(null);
   const [errorText, setErrorText] = useState("");
 
   useEffect(() => {
-    setUserData(user);
-  }, [user]);
+    if (userDetails) {
+      setUserData(userDetails.profileDetails);
+    }
+  }, [userDetails]);
 
   useEffect(() => {
     if (isError) {
