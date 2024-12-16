@@ -2,6 +2,7 @@ const OpenAI = require("openai");
 // const axios = require("axios");
 const fs = require("fs");
 const prompt = require("./prompt");
+const AppError = require("./utils/appError");
 // const FormData = require("form-data");
 
 const API_KEY = process.env.OPEN_AI_KEY;
@@ -26,6 +27,31 @@ class OpenAIModel {
     return response;
   }
 
+  async #checkFileAvailability(fileId, maxRetries = 3) {
+    let retries = 0;
+    while (retries < maxRetries) {
+      try {
+        const response = await this.openai.files.retrieve(fileId);
+        console.log("🚀 ~ response:", response);
+        if (response) {
+          return true;
+        } else {
+          throw new Error("File not available yet");
+        }
+      } catch (error) {
+        retries++;
+        console.log("🚀 ~ error:", error);
+        console.log(
+          `File not available, retrying (${retries}/${maxRetries})...`
+        );
+        await new Promise(resolve =>
+          setTimeout(resolve, Math.pow(2, retries) * 1000)
+        ); // Exponential backoff
+      }
+    }
+    throw new AppError("Unable to access file, try again.", 400);
+  }
+
   async getJSONFromPdf(filePath) {
     // Upload file
     console.log("Uploading file ...");
@@ -33,8 +59,12 @@ class OpenAIModel {
     console.log("🚀 ~ fileResponse:", fileResponse);
     const fileId = fileResponse.id;
 
-    // Giving some time before accessing the file
-    await new Promise(res => setTimeout(res, 1000));
+    // Check if file is available to access
+    await this.#checkFileAvailability(fileId);
+    console.log("File is available to access");
+
+    // // Giving some time before accessing the file
+    // await new Promise(res => setTimeout(res, 1000));
 
     // Creaete assistant if not already present
     const assistants = await this.listAssistants();
