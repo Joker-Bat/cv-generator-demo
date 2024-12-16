@@ -8,6 +8,11 @@ const MODEL_OPTIONS = {
   openai: "openai",
 };
 
+const MESSAGE_TYPE = {
+  info: "info",
+  error: "error",
+};
+
 const Upload = () => {
   const navigate = useNavigate();
 
@@ -18,7 +23,10 @@ const Upload = () => {
   const termsAndConditionRef = useRef();
 
   const [pdfFile, setPdfFile] = useState(null);
-  const [statusText, setStatusText] = useState("");
+  const [statusText, setStatusText] = useState({
+    message: "",
+    type: "",
+  });
   const [model] = useState(MODEL_OPTIONS.openai);
   // const [loading, setLoading] = useState(false);
 
@@ -64,9 +72,15 @@ const Upload = () => {
   const updateFileStatus = file => {
     if (file) {
       if (file.type === "application/pdf") {
-        setStatusText(`File "${file.name}" is ready for upload.`);
+        setStatusText({
+          message: `File "${file.name}" is ready for upload.`,
+          type: MESSAGE_TYPE.info,
+        });
       } else {
-        setStatusText("Only PDF files are allowed.");
+        setStatusText({
+          message: "Only PDF files are allowed.",
+          type: MESSAGE_TYPE.error,
+        });
       }
     }
   };
@@ -89,12 +103,18 @@ const Upload = () => {
     }
 
     if (!pdfFile) {
-      setStatusText("Please select a resume file before uploading.");
+      setStatusText({
+        message: "Please select a resume file before uploading.",
+        type: MESSAGE_TYPE.error,
+      });
       return false;
     }
 
     if (pdfFile.type !== "application/pdf") {
-      setStatusText("Only PDF files are allowed.");
+      setStatusText({
+        message: "Only PDF files are allowed.",
+        type: MESSAGE_TYPE.error,
+      });
       return false;
     }
 
@@ -108,7 +128,10 @@ const Upload = () => {
     const allFieldsValid = validateFields();
     if (!allFieldsValid) return;
 
-    setStatusText("Uploading and processing...");
+    setStatusText({
+      message: "Uploading and processing...",
+      type: MESSAGE_TYPE.info,
+    });
 
     const formData = new FormData();
     formData.append("resume", pdfFile);
@@ -119,7 +142,7 @@ const Upload = () => {
       navigate("/user/profile");
     } catch (error) {
       console.error("Error:", error);
-      setStatusText(error.message);
+      setStatusText({ message: error.message, type: MESSAGE_TYPE.error });
     }
   };
 
@@ -215,7 +238,17 @@ const Upload = () => {
               </div>
 
               {/* <!-- Status --> */}
-              <div className="mt-4 text-md text-red-600">{statusText}</div>
+              {statusText?.message && (
+                <div
+                  className={`mt-4 text-md ${
+                    statusText.type === MESSAGE_TYPE.info
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {statusText.message}
+                </div>
+              )}
 
               {/* <!-- Submit Button --> */}
               <div className="mt-6">
