@@ -123,6 +123,7 @@ const Login = () => {
                         }`}
                         onChange={handleChangeEmail}
                         disabled={emailSubmitted}
+                        autoFocus
                         required
                       />
                     </div>
@@ -141,6 +142,7 @@ const Login = () => {
                           className="mt-2 w-full border-gray-300 rounded-lg shadow-sm text-sm px-4 py-2 focus:ring-indigo-500 focus:border-indigo-500"
                           value={otp}
                           onChange={handleOTPChange}
+                          autoFocus
                           required
                         />
                         <p className="text-sm text-gray-600 mt-2">
